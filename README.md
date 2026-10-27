@@ -40,7 +40,7 @@
 ## 安裝
 
 ```powershell
-git clone https://github.com/<your-name>/ClaudeNexus.git
+git clone https://github.com/r-ty-m1/ClaudeNexus.git
 cd ClaudeNexus
 powershell -NoProfile -File install.ps1 -StatusLine
 ```
