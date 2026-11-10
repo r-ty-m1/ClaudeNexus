@@ -39,6 +39,16 @@
 
 ## 安裝
 
+### 方法一：下載安裝包（最簡單）
+
+1. 到 [Releases](https://github.com/r-ty-m1/ClaudeNexus/releases/latest) 下載 `ClaudeNexus-*-windows.zip`
+2. 右鍵 → 全部解壓縮
+3. 連按兩下 `install.bat`（想直接讀到官方額度，改按 `install-official-quota.bat`）
+
+zip 內附 `README.txt`，有完整的設定教學與常見問題。
+
+### 方法二：用 git 安裝
+
 ```powershell
 git clone https://github.com/r-ty-m1/ClaudeNexus.git
 cd ClaudeNexus
