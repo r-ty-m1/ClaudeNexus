@@ -1550,6 +1550,21 @@ $win.Left = if ([double]$Config.left -ge 0) { [double]$Config.left } else { $wa.
 $win.Top  = if ([double]$Config.top -ge 0) { [double]$Config.top } else { $wa.Bottom - 560 }
 $ModeItems = @()
 
+# 視窗不得停在工作列後面或螢幕外（只處理主螢幕；視窗中心在其他螢幕時不動）
+function Keep-OnScreen {
+  $wa = [Windows.SystemParameters]::WorkArea
+  $cx = $win.Left + $win.ActualWidth / 2; $cy = $win.Top + $win.ActualHeight / 2
+  $onOther = $cx -lt 0 -or $cy -lt 0 -or $cx -gt [Windows.SystemParameters]::PrimaryScreenWidth -or $cy -gt [Windows.SystemParameters]::PrimaryScreenHeight
+  if ($onOther) {
+    $vs = @([Windows.SystemParameters]::VirtualScreenLeft, [Windows.SystemParameters]::VirtualScreenTop,
+            [Windows.SystemParameters]::VirtualScreenWidth, [Windows.SystemParameters]::VirtualScreenHeight)
+    if ($cx -ge $vs[0] -and $cx -le $vs[0] + $vs[2] -and $cy -ge $vs[1] -and $cy -le $vs[1] + $vs[3]) { return }
+  }
+  $win.Left = [math]::Max($wa.Left, [math]::Min($win.Left, $wa.Right - $win.ActualWidth))
+  $win.Top  = [math]::Max($wa.Top,  [math]::Min($win.Top,  $wa.Bottom - $win.ActualHeight))
+}
+$win.Add_ContentRendered({ Keep-OnScreen })
+
 $drag = {
   param($sender, $e)
   if ($e.ClickCount -eq 2) {
@@ -1557,6 +1572,7 @@ $drag = {
     return
   }
   try { $win.DragMove() } catch {}
+  Keep-OnScreen
   $Config.left = [math]::Round($win.Left); $Config.top = [math]::Round($win.Top); Save-Config
   Restack-Toasts
 }
