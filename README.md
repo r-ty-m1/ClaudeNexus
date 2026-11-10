@@ -43,7 +43,7 @@
 
 到 [Releases](https://github.com/r-ty-m1/ClaudeNexus/releases/latest) 擇一下載：
 
-- **`ClaudeNexus-*-Setup.exe`**：連按兩下即可安裝並啟動。Windows 若跳出 SmartScreen（安裝檔沒有付費簽章），按「其他資訊」→「仍要執行」。
+- **`ClaudeNexus-*-Setup.exe`**：連按兩下即可安裝並啟動。⚠️ **此版本不會自動讀取官方額度**，額度百分比為本機估算，需要準確數字請用 zip 版的 `install-official-quota.bat` 或手動校正。Windows 若跳出 SmartScreen（安裝檔沒有付費簽章），按「其他資訊」→「仍要執行」。
 - **`ClaudeNexus-*-windows.zip`**：解壓縮後連按兩下 `install.bat`；想直接讀到官方額度，改按 `install-official-quota.bat`。內附 `README.txt`，有完整的設定教學與常見問題。
 
 ### 方法二：用 git 安裝
