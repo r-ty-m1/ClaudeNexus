@@ -1,0 +1,30 @@
+name: Release
+
+# 推送 v* 標籤（例如 v1.0.0）時，自動打包並建立 GitHub Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build zip
+        run: |
+          name="ClaudeNexus-${GITHUB_REF_NAME}-windows"
+          mkdir -p "dist/$name"
+          cp ClaudeNexus.ps1 ClaudeNexus.vbs install.ps1 statusline.ps1 LICENSE "dist/$name/"
+          cp release/* "dist/$name/"
+          (cd dist && zip -r "../$name.zip" "$name")
+          echo "ZIP=$name.zip" >> "$GITHUB_ENV"
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$ZIP" \
+            --title "Claude Nexus $GITHUB_REF_NAME" \
+            --notes-file release/NOTES.md
